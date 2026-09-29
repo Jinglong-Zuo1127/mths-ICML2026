@@ -1,0 +1,62 @@
+[2025-09-17 22:58:17] profile.py(235) : ====================================================================
+[2025-09-17 22:58:17] profile.py(236) : LLM Parameters
+[2025-09-17 22:58:17] profile.py(237) : --------------------------------------------------------------------
+[2025-09-17 22:58:17] profile.py(238) :   - LLM: HttpsApi
+[2025-09-17 22:58:17] profile.py(241) :   - do_auto_trim: True
+[2025-09-17 22:58:17] profile.py(241) :   - debug_mode: False
+[2025-09-17 22:58:17] profile.py(241) :   - _host: api.bltcy.ai
+[2025-09-17 22:58:17] profile.py(241) :   - _key: sk-dKMuUHsISnfTuYGPDb78437190Db4bC19f968bC796260230
+[2025-09-17 22:58:17] profile.py(241) :   - _model: gpt-5-mini
+[2025-09-17 22:58:17] profile.py(241) :   - _timeout: 240
+[2025-09-17 22:58:17] profile.py(241) :   - _kwargs: {}
+[2025-09-17 22:58:17] profile.py(241) :   - _cumulative_error: 0
+[2025-09-17 22:58:17] profile.py(242) : ====================================================================
+[2025-09-17 22:58:17] profile.py(243) : Problem Parameters
+[2025-09-17 22:58:17] profile.py(244) : --------------------------------------------------------------------
+[2025-09-17 22:58:17] profile.py(245) :   - Problem: TSPEvaluation
+[2025-09-17 22:58:17] profile.py(248) :   - task_description: Develop an algorithm to address the Traveling Salesman Problem. The objective is to determine the shortest route that visits each city in a given list exactly once and then returns to the starting city, thereby minimizing the total distance traveled.
+[2025-09-17 22:58:17] profile.py(248) :   - use_numba_accelerate: False
+[2025-09-17 22:58:17] profile.py(248) :   - use_protected_div: False
+[2025-09-17 22:58:17] profile.py(248) :   - protected_div_delta: 1e-05
+[2025-09-17 22:58:17] profile.py(248) :   - random_seed: None
+[2025-09-17 22:58:17] profile.py(248) :   - timeout_seconds: 1280
+[2025-09-17 22:58:17] profile.py(248) :   - exec_code: True
+[2025-09-17 22:58:17] profile.py(248) :   - safe_evaluate: True
+[2025-09-17 22:58:17] profile.py(248) :   - daemon_eval_process: False
+[2025-09-17 22:58:17] profile.py(248) :   - fork_proc: auto
+[2025-09-17 22:58:17] profile.py(248) :   - n_instance: 64
+[2025-09-17 22:58:17] profile.py(250) : ====================================================================
+[2025-09-17 22:58:17] profile.py(251) : Method Parameters
+[2025-09-17 22:58:17] profile.py(252) : --------------------------------------------------------------------
+[2025-09-17 22:58:17] profile.py(253) :   - Method: MTAHD
+[2025-09-17 22:58:17] profile.py(257) :   - EoHPrompt: <class 'llm4ad.method.mteop.prompt_abstract.EoHPrompt_abstract'>
+[2025-09-17 22:58:17] profile.py(257) :   - _evaluations: [<evaluation_tsp.TSPEvaluation object at 0x000001AB816AE810>, <evaluation_cvrp.CVRPEvaluation object at 0x000001AB8186E050>, <evaluation_fssp.FSSPEvaluation object at 0x000001ABFEF3C290>]
+[2025-09-17 22:58:17] profile.py(257) :   - _num_tasks: 3
+[2025-09-17 22:58:17] profile.py(257) :   - _template_program_strs: ['\n\nimport numpy as np\n\nclass TSPSolver:\n    def __init__(self, coordinates: np.ndarray, distance_matrix: np.ndarray):\n        """\n        Initialize the TSP solver.\n\n        Args:\n            coordinates: Numpy array of shape (n, 2) containing the (x, y) coordinates of each city.\n            distance_matrix: Numpy array of shape (n, n) containing pairwise distances between cities.\n        """\n        self.coordinates = coordinates\n        self.distance_matrix = distance_matrix\n        \n    # --- your code here ---\n\n    def solve(self) -> np.ndarray:\n        """\n        Solve the Traveling Salesman Problem (TSP).\n\n        Returns:\n            A numpy array of shape (n,) containing a permutation of integers\n            [0, 1, ..., n-1] representing the order in which the cities are visited.\n\n            The tour must:\n            - Start and end at the same city (implicitly, since it\'s a loop)\n            - Visit each city exactly once\n        """\n        n = len(self.coordinates)\n\n        # --- your code here ---\n\n        # Example (naive ordered tour ¡ª replace with your algorithm):\n        tour = np.arange(n)\n\n        return tour\n', '\nimport numpy as np\n\nclass CVRPSolver:\n    def __init__(self, coordinates: np.ndarray, distance_matrix: np.ndarray, demands: list, vehicle_capacity: int):\n        """\n        Initialize the CVRP solver.\n\n        Args:\n            coordinates: Numpy array of shape (n, 2) containing the (x, y) coordinates of each node, including the depot.\n            distance_matrix: Numpy array of shape (n, n) containing pairwise distances between nodes.\n            demands: List of integers representing the demand of each node (first node is typically the depot with zero demand).\n            vehicle_capacity: Integer representing the maximum capacity of each vehicle.\n        """\n        self.coordinates = coordinates\n        self.distance_matrix = distance_matrix\n        self.demands = demands\n        self.vehicle_capacity = vehicle_capacity\n\n    # --- your code here ---\n    \n    def solve(self) -> list:\n        """\n        Solve the Capacitated Vehicle Routing Problem (CVRP).\n    \n        Returns:\n            A one-dimensional list of integers representing the sequence of nodes visited by all vehicles.\n            The depot (node 0) is used to separate different vehicle routes and appears at the start and end\n            of each route. For example: [0, 1, 4, 0, 2, 3, 0] represents:\n              - Route 1: 0 ¡ú 1 ¡ú 4 ¡ú 0\n              - Route 2: 0 ¡ú 2 ¡ú 3 ¡ú 0\n            \n            Requirements:\n            - Each route must start and end at the depot (node 0)\n            - The total demand of nodes in each route must not exceed vehicle capacity\n            - Each customer node (non-zero) must be visited exactly once across all routes\n            - The output must be a flat list (not nested lists)\n            - Depot nodes (0) separate routes and mark route boundaries\n        """\n        n = len(self.coordinates)\n\n        # --- your code here ---\n\n        # Example (naive solution ¡ª replace with your algorithm):\n        # This example simply assigns nodes to routes in order until the vehicle capacity is reached.\n        solution = [0]  # Start at the depot\n        current_capacity = 0\n\n        for i in range(1, n):\n            if current_capacity + self.demands[i] > self.vehicle_capacity:\n                solution.append(0)  # return to depot and start a new route\n                current_capacity = 0\n\n            solution.append(i)\n            current_capacity += self.demands[i]\n\n        if solution[-1] != 0:\n            solution.append(0)  # end the last route at the depot\n\n        return solution\n', '\nimport numpy as np\n\nclass FSSPSolver:\n    def __init__(self, num_jobs: int, num_machines: int, processing_times: list):\n        """\n        Initialize the FSSP solver.\n\n        Args:\n            num_jobs: Number of jobs in the problem\n            num_machines: Number of machines in the problem\n            processing_times: List of lists where processing_times[j][m] is the processing time of job j on machine m\n        """\n        self.num_jobs = num_jobs\n        self.num_machines = num_machines\n        self.processing_times = processing_times\n\n    def solve(self) -> list:\n        """\n        Solve the Flow Shop Scheduling Problem (FSSP).\n\n        Returns:\n            A list representing the sequence of jobs to be processed.\n            For example, [0, 2, 1] means job 0 is processed first, then job 2, then job 1.\n            All jobs must be processed on all machines in the same order.\n\n            The sequence must include all jobs exactly once.\n        """\n        # --- Implement your scheduling algorithm here ---\n\n        # Simple solution: process jobs in their original order (0, 1, 2, ...)\n        job_sequence = list(range(self.num_jobs))\n\n        return job_sequence\n        ']
+[2025-09-17 22:58:17] profile.py(257) :   - _task_description_strs: ['Develop an algorithm to address the Traveling Salesman Problem. The objective is to determine the shortest route that visits each city in a given list exactly once and then returns to the starting city, thereby minimizing the total distance traveled.', "Develop an algorithm to solve the Capacitated Vehicle Routing Problem (CVRP). The objective is to determine the optimal set of routes for a fleet of vehicles that all start and end at a central depot. Each vehicle has a maximum capacity, and the routes must collectively serve all customer nodes exactly once without exceeding the vehicle's capacity. The goal is to minimize the total distance traveled across all routes.", 'Develop an algorithm to solve the Flow Shop Scheduling Problem (FSSP) by determining the optimal sequence of jobs to minimize makespan. In FSSP, all jobs must be processed on all machines in the same order (machine 0, then machine 1, then machine 2, etc.). The goal is to find the job sequence that minimizes the makespan (total completion time) while ensuring that: (1) all jobs follow the same machine processing order, (2) each machine processes only one job at a time, and (3) each job can only be processed on one machine at a time. The algorithm should return a permutation of job indices representing the order in which jobs should be processed.']
+[2025-09-17 22:58:17] profile.py(257) :   - _max_generations: 1000
+[2025-09-17 22:58:17] profile.py(257) :   - _max_sample_nums: 1000
+[2025-09-17 22:58:17] profile.py(257) :   - _high_level_pop_size: 8
+[2025-09-17 22:58:17] profile.py(257) :   - _low_level_max_samples_each_program: 4
+[2025-09-17 22:58:17] profile.py(257) :   - _low_level_pop_size: 2
+[2025-09-17 22:58:17] profile.py(257) :   - _selection_num: 2
+[2025-09-17 22:58:17] profile.py(257) :   - _use_e2_operator: True
+[2025-09-17 22:58:17] profile.py(257) :   - _use_m1_operator: True
+[2025-09-17 22:58:17] profile.py(257) :   - _use_m2_operator: True
+[2025-09-17 22:58:17] profile.py(257) :   - _knowledge_transfer: True
+[2025-09-17 22:58:17] profile.py(257) :   - _low_level_search: True
+[2025-09-17 22:58:17] profile.py(257) :   - _pareto_population_management: True
+[2025-09-17 22:58:17] profile.py(257) :   - _num_samplers: 8
+[2025-09-17 22:58:17] profile.py(257) :   - _num_evaluators: 8
+[2025-09-17 22:58:17] profile.py(257) :   - _resume_mode: False
+[2025-09-17 22:58:17] profile.py(257) :   - _debug_mode: False
+[2025-09-17 22:58:17] profile.py(257) :   - _multi_thread_or_process_eval: thread
+[2025-09-17 22:58:17] profile.py(257) :   - _high_level_population: <llm4ad.method.mteop.population.Population object at 0x000001AB813B14D0>
+[2025-09-17 22:58:17] profile.py(257) :   - _low_level_populations: {}
+[2025-09-17 22:58:17] profile.py(257) :   - _key_function_templates: {}
+[2025-09-17 22:58:17] profile.py(257) :   - _samplers: <llm4ad.method.mteop.sampler.EoHSampler object at 0x000001AB815AD350>
+[2025-09-17 22:58:17] profile.py(257) :   - _evaluators: [<llm4ad.base.evaluate.SecureEvaluator object at 0x000001AB818FFAD0>, <llm4ad.base.evaluate.SecureEvaluator object at 0x000001AB81876090>, <llm4ad.base.evaluate.SecureEvaluator object at 0x000001AB82CF08D0>]
+[2025-09-17 22:58:17] profile.py(257) :   - _tot_sample_nums: 0
+[2025-09-17 22:58:17] profile.py(257) :   - _initial_sample_nums_max: 96
+[2025-09-17 22:58:17] profile.py(257) :   - _evaluation_executor: <concurrent.futures.thread.ThreadPoolExecutor object at 0x000001AB81465350>
+[2025-09-17 22:58:17] profile.py(259) : =====================================================================
